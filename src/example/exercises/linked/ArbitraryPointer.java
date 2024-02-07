@@ -13,19 +13,36 @@ public class ArbitraryPointer {
         three.arbitrary = head;
         head.arbitrary = three;
 
-        System.out.println(head);
+        showLinkedList(head);
 
-        System.out.println(deepCopy(head, new HashMap<Integer, LinkedListNode>()));
+        showLinkedList(
+                deepCopy(head, new HashMap<Integer, LinkedListNode>())
+        );
 
     }
 
+    private static void showLinkedList(LinkedListNode head) {
+
+        LinkedListNode currentNode = head;
+
+        do {
+
+            System.out.println(currentNode);
+            currentNode = currentNode.next;
+
+        } while (currentNode != null);
+    }
+
     public static LinkedListNode deepCopy(LinkedListNode head, HashMap<Integer, LinkedListNode> hash){
+
+        if(head == null)
+            return null;
 
         LinkedListNode newHead = new LinkedListNode(head.value);
         hash.put(newHead.value, newHead);
 
         newHead.next = deepCopy(head.next, hash);
-        newHead.arbitrary = hash.get(head.arbitrary.value);
+        newHead.arbitrary = head.arbitrary == null ? null : hash.get(head.arbitrary.value);
 
         return newHead;
 
@@ -56,8 +73,8 @@ class LinkedListNode {
     public String toString() {
         return "LinkedListNode{" +
                 "value=" + value +
-                ", next=" + (next == null ? "null" : next.toString()) +
-                ", arbitrary=" + (arbitrary == null ? "null" : arbitrary.toString()) +
+                ", next=" + (next == null ? "null" : next.value) +
+                ", arbitrary=" + (arbitrary == null ? "null" : arbitrary.value) +
                 '}';
     }
 }
